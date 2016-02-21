@@ -57,10 +57,10 @@ function register(name, username, email, pass1) {
 	}
 
 	var param = name+":"+username+":"+email+":"+pass1+":"+n;
+	
 	// encrypt param
 	param = CryptoJS.AES.encrypt(param, key, {iv:iv});
 	param = param.ciphertext.toString(CryptoJS.enc.Base64);
-	console.log(param);
 
 	if (window.XMLHttpRequest) {
  		xmlhttp=new XMLHttpRequest();
@@ -75,11 +75,20 @@ function register(name, username, email, pass1) {
 }
 
 function checkregistration() {
+	
+	// // // // // // // // // // // // // //
+	// 		NEED TO ESCAPE THE STRING 	   //
+	// // // // // // // // // // // // // //
+
+/////////////////////////////////////////////////////////////////////////
+	
 	var name = document.getElementById("Name").value;
 	var username = document.getElementById("Username").value;
 	var email = document.getElementById("Email").value;
 	var pass1 = document.getElementById("Password").value;
 	var pass2 = document.getElementById("repassword").value;
+
+/////////////////////////////////////////////////////////////////////////
 
 	if (checkName(name)) {
 		if (username!="") {

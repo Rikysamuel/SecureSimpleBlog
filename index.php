@@ -39,8 +39,22 @@
 
 <nav class="nav">
     <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
-    <ul class="nav-primary">
+    <!-- <ul class="nav-primary">
         <li><a href="new_post.html">+ Tambah Post</a></li>
+    </ul> -->
+    <ul class="nav-primary">
+        <form method="post" id="login_index" onsubmit="return login()">
+            <li>
+                <input type="text" id="UsernameLogin" name="UsernameLogin" placeholder="Username"/>
+                &nbsp;
+                <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
+                &nbsp;
+                <input type="submit" value="Login!" class="submit-button"/>
+            </li>
+            <br/> 
+            <li style="color:blue">Don't have an account? You can <a href="register.html" style="color:red"> register here <a/>.
+            </li>
+        </form>
     </ul>
 </nav>
 
@@ -99,9 +113,12 @@
 <script type="text/javascript" src="assets/js/fittext.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
-<script type="text/javascript" src="assets/js/modifypost.js"></script>
 <script type="text/javascript" src="assets/js/confirm.js"></script>
-<script type="text/javascript" src="assets/js/posting.j"></script>
+<script type="text/javascript" src="assets/js/posting.js"></script>
+<script type="text/javascript" src="assets/js/CryptoJS/components/core-min.js"></script>
+<script type="text/javascript" src="assets/js/CryptoJS/rollups/aes.js"></script>
+<script type="text/javascript" src="assets/js/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';

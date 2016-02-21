@@ -10,6 +10,7 @@
 	$iv =  pack("H*", "abcdef9876543210abcdef9876543210");
 	$param = base64_decode($_POST["param"]);
 
+	// NEED TO ESCAPE THE STRING
 	$param = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $param, MCRYPT_MODE_CBC, $iv));
 
 

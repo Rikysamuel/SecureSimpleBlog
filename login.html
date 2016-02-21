@@ -47,37 +47,20 @@
             <h2 class="art-title" style="margin-bottom:40px">-</h2>
             <div class="art-body">
                 <div class="art-body-inner">
-                    <h2>Register</h2>
+                    <h2>Login</h2>
 
                     <div id="contact-area">
-                        <form method="post" id="registration" onsubmit="return checkregistration()">
-                            <message for="Username" class="usernameAlert"/>
-                            <label for="Name">Name:</label>
-                            <input type="text" id="Name" name="Name" label="Name"/>
-                            <p id="name_comment"></p>
-
-                            <label for="Username">Username:</label>
-                            <input type="text" id="Username" name="Username" label="Username">
-                            <p id="username_comment"></p>
-
-                            <label for="Email">Email:</label>
-                            <input type="text" id="Email" name="Email" label="Email" class="Email"/>
-                            <p id="email_comment"></p>
+                        <form id="Form" onsubmit="return login()">
+                            <label for="Username_login">Username:</label>
+                            <input type="text" id="UsernameLogin" label="Username_login">
                             
-                            <label for="Password">Pass:</label>
-                            <input type="password" id="Password" name="Password" label="Password"/>
-                            <p id="password_comment"></p>
+                            <label for="Password_login">Password:</label>
+                            <input type="password" id="PasswordLogin" label="Password_login"/>
 
-                            <label for="Password">Re-Pass:</label>
-                            <input type="password" id="repassword" name="repassword" label="repassword"/>
-                            <p id="repass_comment"></p>
-
-                            <br/>
-                            <input type="submit" id="Register" value="Register" class="submit-button"/>
+                            <br/><br/>
+                            <input type="submit" value="Login" class="submit-button"/>
+                            <p id="login_comment"></p>
                         </form>
-                        <ul class="nav-primary">
-                            <li syle="font-weight:bold"><a href="login.html">Already have an account</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -106,9 +89,9 @@
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
 <script type="text/javascript" src="assets/js/CryptoJS/components/core-min.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/rollups/sha256.js"></script>
 <script type="text/javascript" src="assets/js/CryptoJS/rollups/aes.js"></script>
-<script type="text/javascript" src="assets/js/check_user.js"></script>
+<script type="text/javascript" src="assets/js/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';

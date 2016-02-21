@@ -1,108 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
+<?php
+	// sql open connection
+	$db_link = mysqli_connect("localhost", "root", "", "my_db");
+	if (!$db_link) {
+	  die("Failed to connect to MySQL: " . mysql_error());
+	}
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Register USer">
-<meta name="author" content="Rikysamuel">
+	// decrypting process
+	$key = pack("H*", "0123456789abcdef0123456789abcdef");
+	$iv =  pack("H*", "abcdef9876543210abcdef9876543210");
+	$param = base64_decode($_POST["param"]);
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="omfgitsasalmon">
-<meta name="twitter:title" content="Simple Blog">
-<meta name="twitter:description" content="Deskripsi Blog">
-<meta name="twitter:creator" content="Simple Blog">
-<meta name="twitter:image:src" content="{{! TODO: ADD GRAVATAR URL HERE }}">
+	$param = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $param, MCRYPT_MODE_CBC, $iv));
+	$param = explode(":", $param);
 
-<meta property="og:type" content="article">
-<meta property="og:title" content="Simple Blog">
-<meta property="og:description" content="Deskripsi Blog">
-<meta property="og:image" content="{{! TODO: ADD GRAVATAR URL HERE }}">
-<meta property="og:site_name" content="Simple Blog">
+	$username = mysql_escape_string($param[0]);
+	$password = $param[1];
+	$h_password = hash("sha256", $password);
 
-<link rel="stylesheet" type="text/css" href="assets/css/screen.css" />
-<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+	$result = mysqli_query($db_link, "SELECT * FROM users WHERE username='$username'");
+    while ($row = mysqli_fetch_assoc($result)) {
+    	if (strcmp($row["password"], $h_password) == 0) {
+    		$n = intval($row["n"]) - 1;
+			$sqlupdate="UPDATE users SET password='$password', n='$n' WHERE username='$username'";
 
-<!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+			if ($db_link->query($sqlupdate) === TRUE) {
+			    echo "success";
+			} else {
+			    echo "Error updating record: " . $db_link->error;
+			}
+    	} else {
+    		echo "false";
+    	}
+    }
 
-<title>Simple Blog</title>
-
-
-</head>
-
-
-<body class="default">
-    <div class="wrapper">
-
-        <nav class="nav">
-		    <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
-		</nav>
-
-
-        <article class="art simple post"><br/><br/>
-            <h2 class="art-title" style="margin-bottom:40px">-</h2>
-            <div class="art-body">
-                <div class="art-body-inner">
-                    <h2>Login</h2>
-
-                    <div id="contact-area">
-                        <!--form action="#" method="post">-->
-                        <form id="Form" onsubmit="return IsEmailValidForRegistry()">
-
-                            <label for="Username">Username:</label>
-                            <input type="text" id="Username" label="Username">
-                            
-                            <label for="Password">Password:</label>
-                            <input type="text" id="Password" label="Password" type="password"/>
-
-                            <br/><br/>
-                            <input type="submit" value="Login" class="submit-button" action="#"/>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </div>
-</body>
-
-
-<footer class="footer">
-    <div class="back-to-top"><a href="">Back to top</a></div>
-    <!-- <div class="footer-nav"><p></p></div> -->
-    <div class="psi">&Psi;</div>
-    <aside class="offsite-links">
-        [IF4033] Information Assurance and Security
-        <br>
-        <a class="twitter-link" href="#">13512089 - Rikysamuel</a>
-        <br>
-        <a class="twitter-link" href="#">1351206x - Kevin Huang</a>
-        
-    </aside>
-</footer>
-
-</div>
-
-<script type="text/javascript" src="assets/js/fittext.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
-<script type="text/javascript" src="assets/js/respond.min.js"></script>
-<script type="text/javascript" src="assets/js/modifypost.js"></script>
-<script type="text/javascript" src="assets/js/confirm.js"></script>
-<script type="text/javascript" src="assets/js/posting.j"></script>
-
-<script type="text/javascript">
-  var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';
-
-  (function(g,h,o,s,t,z){g.GoogleAnalyticsObject=s;g[s]||(g[s]=
-      function(){(g[s].q=g[s].q||[]).push(arguments)});g[s].s=+new Date;
-      t=h.createElement(o);z=h.getElementsByTagName(o)[0];
-      t.src='//www.google-analytics.com/analytics.js';
-      z.parentNode.insertBefore(t,z)}(window,document,'script','ga'));
-      ga('create',ga_ua);ga('send','pageview');
-</script>
-
-</body>
-</html>
+	// sql close connection
+	$db_link->close();
+?>

@@ -12,9 +12,11 @@ $result = mysqli_query($link,"SELECT * FROM users WHERE username='$username'");
 
 // check whether username is already exist
 if (mysqli_num_rows($result) > 0) {
-    echo "Username is already exist!";
+    while ($row = mysqli_fetch_assoc($result)) {
+    	echo $row["n"];
+    }
 } else {
-	echo "Ok";
+	echo "false";
 }
 
 // close connection
