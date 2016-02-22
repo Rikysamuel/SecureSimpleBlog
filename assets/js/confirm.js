@@ -1,16 +1,13 @@
 var validFileExtensions = ["jpg", "jpeg", "bmp", "png"];
 var imageVal = false;
 
-//fungsi untuk konfirmasi jadi hapus/tidak sebuah post
-function hapus(id) {
-  //memunculkan prompt konfirmasi yes-or-no
-  var answer = confirm("Apakah Anda yakin menghapus post ini?");
+function hapus(id, user, token) {
+  var answer = confirm("Are you sure want to delete this post?");
+  
   if (answer){
     var d_id = "d_"+id;
-    //mengambil data dari dokumen html yang mempunyai id bernama "d_id"
-    var link = document.getElementById(d_id);
-    //menuju halaman tepat post dihapus
-    link.href = "deletepost.php?var="+id;
+    var link = document.getElementById(d_id);  
+    link.href = "deletepost.php?var=" + id + "&user=" + user + "&token=" + token;
   }
 }
 
@@ -121,8 +118,6 @@ function checkformat() {
         document.getElementById("date_comment").innerHTML="ok!";
         document.getElementById("date_comment").style.color="green";
         document.getElementById("form_submit").action = "new_post.php";
-
-        return image;
       }
     }
   }

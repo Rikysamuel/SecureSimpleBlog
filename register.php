@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,11 +76,13 @@
                             <input type="password" id="repassword" name="repassword" label="repassword"/>
                             <p id="repass_comment"></p>
 
+                            <input type="hidden" id="csrf-token" value='<?=$_SESSION["csrf-token"]; ?>'/>
+
                             <br/>
                             <input type="submit" id="Register" value="Register" class="submit-button"/>
                         </form>
                         <ul class="nav-primary">
-                            <li syle="font-weight:bold"><a href="loginPage.php">Already have an account</a></li>
+                            <li syle="font-weight:bold"><a href="login_page.php">Already have an account</a></li>
                         </ul>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+var csrftoken = document.getElementById("csrf-token").value;
+
 function checkName(name) {
 	if (name == "") {
 		document.getElementById("name_comment").innerHTML="Name is empty!";
@@ -28,11 +30,15 @@ function checkpass(pass1, pass2) {
 	if (pass1 == "") {
 		document.getElementById("password_comment").innerHTML = "password is empty!"
 		document.getElementById("password_comment").style.color="red";
+	} else {
+		document.getElementById("password_comment").innerHTML = "";
 	}
 	if (pass2 == "") {
 		document.getElementById("repass_comment").innerHTML = "password is empty!"
 		document.getElementById("repass_comment").style.color="red";
 		return false;
+	} else {
+		document.getElementById("repass_comment").innerHTML = "";
 	}
 	if (pass1 != pass2) {
 		document.getElementById("repass_comment").innerHTML = "password doesn't match!"
@@ -46,21 +52,13 @@ function checkpass(pass1, pass2) {
 	}
 }
 
-function register(name, username, email, pass1) {
+function register(name, username, email, password, csrftoken) {
 	var n = 10000;
-	var key = CryptoJS.enc.Hex.parse("0123456789abcdef0123456789abcdef");
-	var iv =  CryptoJS.enc.Hex.parse("abcdef9876543210abcdef9876543210");
 
 	// hash pass1 n-times
 	for (var i = 0; i < n; i++) {
-		pass1 = CryptoJS.SHA256(pass1).toString();
+		password = CryptoJS.SHA256(password).toString();
 	}
-
-	var param = name+":"+username+":"+email+":"+pass1+":"+n;
-	
-	// encrypt param
-	param = CryptoJS.AES.encrypt(param, key, {iv:iv});
-	param = param.ciphertext.toString(CryptoJS.enc.Base64);
 
 	if (window.XMLHttpRequest) {
  		xmlhttp=new XMLHttpRequest();
@@ -71,54 +69,47 @@ function register(name, username, email, pass1) {
 
  	xmlhttp.open("POST", "regist_user.php", true);
  	xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
- 	xmlhttp.send("param=" + encodeURIComponent(param));
+ 	xmlhttp.send("name=" + name + "&username=" + username + "&email=" + email + "&password=" + password + "&csrftoken=" + csrftoken);
 }
 
 function checkregistration() {
-	
-	// // // // // // // // // // // // // //
-	// 		NEED TO ESCAPE THE STRING 	   //
-	// // // // // // // // // // // // // //
-
-/////////////////////////////////////////////////////////////////////////
-	
 	var name = document.getElementById("Name").value;
 	var username = document.getElementById("Username").value;
 	var email = document.getElementById("Email").value;
 	var pass1 = document.getElementById("Password").value;
 	var pass2 = document.getElementById("repassword").value;
 
-/////////////////////////////////////////////////////////////////////////
-
 	if (checkName(name)) {
 		if (username!="") {
 			var xmlhttp;
 			if (window.XMLHttpRequest) {
-				xmlhttp=new XMLHttpRequest();	//untuk browser IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();	// IE7+, Firefox, Chrome, Opera, Safari
 		  	} else {
-		  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");	//untuk browser IE6, IE5
+		  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");	// IE6, IE5
 		  	}
 
 			xmlhttp.onreadystatechange=function() {
 				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-					if(xmlhttp.responseText=="Ok") {
+					if(xmlhttp.responseText.indexOf("Error") > -1 ) {
+						document.getElementById("username_comment").innerHTML = xmlhttp.responseText;
+						document.getElementById("username_comment").style.color = "red";
+					} else {
 						document.getElementById("username_comment").innerHTML="Username Ok";
 						document.getElementById("username_comment").style.color = "green";
+
+						csrftoken = xmlhttp.responseText;
 						
 						if (checkemail(email)) {
 							if (checkpass(pass1, pass2)) {
-								register(name, username, email, pass1);
+								register(name, username, email, pass1, csrftoken);
 								window.location.href = "index.php";
 							}
 						}
-					} else {
-						document.getElementById("username_comment").innerHTML = xmlhttp.responseText;
-						document.getElementById("username_comment").style.color = "red";
 					}
 				}
 			}
 
-			xmlhttp.open("GET","check_user_exist.php?username="+username,true);
+			xmlhttp.open("GET", "check_user_exist.php?username=" + username + "&csrftoken=" + csrftoken, true);
 			xmlhttp.send();
 		} else {
 			document.getElementById("username_comment").innerHTML="Username is empty!";

@@ -1,29 +1,28 @@
 <?php
-	// sql open connection
-	$db_link = mysqli_connect("localhost", "root", "", "my_db");
-	if (!$db_link) {
-	  die("Failed to connect to MySQL: " . mysql_error());
+	session_start();
+
+	if (($_SESSION['csrf-token']) == $_POST['csrftoken']) {
+		// sql open connection
+		$db_link = mysqli_connect("localhost", "root", "", "my_db");
+		if (!$db_link) {
+		  die("Failed to connect to MySQL: " . mysql_error());
+		}
+
+		$name = mysql_escape_string($_POST["name"]);
+		$username = mysql_escape_string($_POST["username"]);
+		$email = mysql_escape_string($_POST["email"]);
+		$password = mysql_escape_string($_POST["password"]);
+
+		// insert record
+		$sqlinsert="INSERT INTO users(Name, Username, email, password, n) VALUES('$name','$username','$email','$password','10000')";
+
+		if (!mysqli_query($db_link,$sqlinsert)) {
+			die('Error: ' . mysqli_error($db_link));
+		}
+
+		// sql close connection
+		mysqli_close($db_link);
+	} else {
+		echo "Error: csrf-token missmatch!";
 	}
-
-	// decrypting process
-	$key = pack("H*", "0123456789abcdef0123456789abcdef");
-	$iv =  pack("H*", "abcdef9876543210abcdef9876543210");
-	$param = base64_decode($_POST["param"]);
-
-	// NEED TO ESCAPE THE STRING
-	$param = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $param, MCRYPT_MODE_CBC, $iv));
-
-
-	// trim the param
-	$param = explode(":", $param);
-
-	// insert record
-	$sqlinsert="INSERT INTO users(Name, Username, email, password, role, n) VALUES('$param[0]','$param[1]','$param[2]','$param[3]','0','$param[4]')";
-
-	if (!mysqli_query($db_link,$sqlinsert)) {
-		die('Error: ' . mysqli_error($db_link));
-	}
-
-	// sql close connection
-	mysqli_close($db_link);
 ?>

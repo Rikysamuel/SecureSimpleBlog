@@ -1,3 +1,19 @@
+<?php
+    session_start();
+    if (!isset($_SESSION["token"])) {
+        header('Location: index.php');
+    }
+
+    if ($_SESSION['user-id'] != $_GET['id']) {
+        header('Location: index.php');
+    }
+
+    if ($_SESSION['csrf-token'] != $_GET['tok']) {
+        header('Location: index.php');
+    }
+
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
+?>
 <!DOCTYPE html>
 <html>
 <head>

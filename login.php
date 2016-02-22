@@ -33,11 +33,9 @@
 
 					// CREATE USER-SESSION
 					$_SESSION["name"] = $row["Name"];
+					$_SESSION["user-id"] = $row["Username"];
 					$_SESSION["token"] = $session_token;
 					
-					// CREATE CSRF-TOKEN
-					$_SESSION["csrf-token"] = hash("sha256", uniqid());
-
 				    echo "success";
 				} else {
 					echo "3 false";

@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if (!isset($_SESSION["token"])) {
+        header('Location: index.php');
+    }
+
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +48,7 @@
 <nav class="nav">
     <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
     <ul class="nav-primary">
-        <li><a href="#">Username</a></li>
+        <li><a href="logout.php"><?=$_SESSION['name']?>(logout)</a></li>
     </ul>
 </nav>
 
@@ -69,6 +77,8 @@
 
                     <label for="Konten">Konten:</label>
                     <textarea name="Konten" rows="20" cols="20" id="Konten"></textarea>
+
+                    <input type="hidden" id="csrf-token" name="csrf-token" value='<?=$_SESSION["csrf-token"]; ?>'/>
                     
                     <input type="submit" id="submit" value="Simpan" class="submit-button">
                 </form>

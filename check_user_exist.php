@@ -1,22 +1,31 @@
 <?php
-$username = mysql_escape_string($_GET['username']);
+	session_start();
 
-// db connection
-$link = mysqli_connect('localhost','root','','my_db');
-if (!$link) {
-  die('Could not connect: ' . mysqli_error($con));
-}
+	if (($_SESSION['csrf-token']) == $_GET['csrftoken']) {
+		$username = mysql_escape_string($_GET['username']);
 
-// process the query
-$result = mysqli_query($link,"SELECT * FROM users WHERE username='$username'");
+		// db connection
+		$link = mysqli_connect('localhost','root','','my_db');
+		if (!$link) {
+		  die('Could not connect: ' . mysqli_error($con));
+		}
 
-// check whether username is already exist
-if (mysqli_num_rows($result) > 0) {
-    echo "Username is already exist!";
-} else {
-	echo "Ok";
-}
+		// process the query
+		$result = mysqli_query($link,"SELECT * FROM users WHERE username='$username'");
 
-// close connection
-mysqli_close($link);
+		// recreate csrf-token
+		$_SESSION["csrf-token"] = hash("sha256", uniqid());
+
+		// check whether username is already exist
+		if (mysqli_num_rows($result) > 0) {
+		    echo "Error: Username is already exist!";
+		} else {
+			echo $_SESSION["csrf-token"];
+		}
+
+		// close connection
+		mysqli_close($link);
+	} else {
+		echo "Error: csrf-token missmatch!";
+	}
 ?>

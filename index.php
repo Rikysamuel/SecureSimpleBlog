@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,7 @@
                   <li><a href=\'logout.php\' style="color:red;">'; echo $_SESSION["name"]; echo ' (logout)</a></li>&nbsp;';
             echo "|";      
             echo '<li><a href="add_post.php">+ Tambah Post</a></li>
-              </ul>';   
+              </ul>';
       } else {
         $_SESSION["csrf-token"] = hash("sha256", uniqid());
         echo '<ul class="nav-primary">
@@ -61,8 +62,8 @@
                           <input type="submit" value="Login!" class="submit-button"/>
                           <input type="hidden" id="csrf-token" value="'; echo $_SESSION["csrf-token"]; echo '"/>
                       </li>
-                      <br/> 
-                      <li style="color:blue">Don\'t have an account? You can <a href="register.html" style="color:red"> register here <a/>.
+                      <p id="login_comment" style="margin-bottom: -11px;"><br/></p>
+                      <li style="color:blue;margin-left:0px;">Don\'t have an account? You can <a href="register.php" style="color:red"> register here <a/>.
                       </li>
                   </form>
               </ul>';
@@ -82,7 +83,7 @@
                 }
 
                 //ambil data ke dalam array row dari database
-                $result = mysqli_query($link,"SELECT * FROM Posting ORDER BY Posting.ID DESC");
+                $result = mysqli_query($link,"SELECT * FROM `posting` JOIN users WHERE posting.USERNAME = users.Username ORDER BY Posting.ID DESC");
                 while($row[] = mysqli_fetch_array($result));
 
                 //data dalam array diprint ke halaman html
@@ -91,11 +92,15 @@
                     echo '<div class="art-list-item-title-and-time">';
                       echo '<h2 class ="art-list-title"><a href="post.php?var='.$row[$it][0].'">'.$row[$it][1].'</a></h2>';
                       echo '<div class="art-list-time">'.$row[$it][2].'</div>';
-                      echo '<div class="art-list-time"><span style="color:#F40034;">&#10029;</span> Featured</div>';
+                      echo '<div class="art-list-time"><span style="color:#F40034;">&#10029;</span> By '.$row[$it][6].'</div>';
                     echo '</div>';
                     echo '<p>'.substr($row[$it][3],0,200).'&hellip;</p>';
                     echo '<p>';
-                      echo '<a href="editpost.php?var='.$row[$it][0].'">Edit</a> | <a id="d_'.$row[$it][0].'" onclick="return hapus('.$row[$it][0].')" href>Hapus</a>';
+                    if (isset($_SESSION["token"])) {
+                      if ($_SESSION["user-id"] == $row[$it][7]) {
+                        echo '<a href="editpost.php?var='.$row[$it][0].'&id='.$_SESSION['user-id'].'&tok='.$_SESSION['csrf-token'].'">Edit</a> | <a id="d_'.$row[$it][0].'" onclick="return hapus(\''.$row[$it][0].'\',\''.$_SESSION['user-id'].'\',\''.$_SESSION['csrf-token'].'\');" href="javascript:;">Hapus</a>';
+                      }
+                    }
                   echo '</li>';
                 }
                 //menutup koneksi
