@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,23 +42,32 @@
 
 <nav class="nav">
     <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
-    <!-- <ul class="nav-primary">
-        <li><a href="new_post.html">+ Tambah Post</a></li>
-    </ul> -->
-    <ul class="nav-primary">
-        <form method="post" id="login_index" onsubmit="return login()">
-            <li>
-                <input type="text" id="UsernameLogin" name="UsernameLogin" placeholder="Username"/>
-                &nbsp;
-                <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
-                &nbsp;
-                <input type="submit" value="Login!" class="submit-button"/>
-            </li>
-            <br/> 
-            <li style="color:blue">Don't have an account? You can <a href="register.html" style="color:red"> register here <a/>.
-            </li>
-        </form>
-    </ul>
+    <?php
+      if (isset($_SESSION["token"])) {
+        echo '<ul class="nav-primary">
+                  <li><a href=\'logout.php\' style="color:red;">'; echo $_SESSION["name"]; echo ' (logout)</a></li>&nbsp;';
+            echo "|";      
+            echo '<li><a href="add_post.php">+ Tambah Post</a></li>
+              </ul>';   
+      } else {
+        $_SESSION["csrf-token"] = hash("sha256", uniqid());
+        echo '<ul class="nav-primary">
+                  <form method="post" id="login_index" onsubmit="return login()">
+                      <li>
+                          <input type="text" id="UsernameLogin" name="UsernameLogin" placeholder="Username"/>
+                          &nbsp;
+                          <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
+                          &nbsp;
+                          <input type="submit" value="Login!" class="submit-button"/>
+                          <input type="hidden" id="csrf-token" value="'; echo $_SESSION["csrf-token"]; echo '"/>
+                      </li>
+                      <br/> 
+                      <li style="color:blue">Don\'t have an account? You can <a href="register.html" style="color:red"> register here <a/>.
+                      </li>
+                  </form>
+              </ul>';
+      }
+    ?>
 </nav>
 
 <div id="home">
@@ -103,7 +115,7 @@
         <br>
         <a class="twitter-link" href="#">13512089 - Rikysamuel</a>
         <br>
-        <a class="twitter-link" href="#">1351206x - Kevin Huang</a>
+        <a class="twitter-link" href="#">13512096 - Kevin Huang</a>
         
     </aside>
 </footer>
@@ -115,9 +127,7 @@
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
 <script type="text/javascript" src="assets/js/confirm.js"></script>
 <script type="text/javascript" src="assets/js/posting.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/components/core-min.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/rollups/aes.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="assets/js/sha256.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">

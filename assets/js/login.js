@@ -1,42 +1,32 @@
-function doLogin(username, password) {
-	var key = CryptoJS.enc.Hex.parse("0123456789abcdef0123456789abcdef");
-	var iv =  CryptoJS.enc.Hex.parse("abcdef9876543210abcdef9876543210");
-	var param = username+":"+password;
-	
-	// encrypt param
-	param = CryptoJS.AES.encrypt(param, key, {iv:iv});
-	param = param.ciphertext.toString(CryptoJS.enc.Base64);
+function doLogin(username, password, csrftoken) {
+	if (window.XMLHttpRequest) {
+	 	xmlhttp=new XMLHttpRequest();
+	}
+	else {
+	 	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
 
-	if (window.XMLHttpRequest)
-	 	{
-	 		xmlhttp=new XMLHttpRequest();
-	 	}
-	 	else
-	 	{
-	 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	 	}
-
-	 	xmlhttp.onreadystatechange=function()
-	 	{
-	 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	 		{
-	 			if (xmlhttp.responseText=="success") {
-	 				window.location.href = "index.php";
-	 			} else {
-	 				document.getElementById("login_comment").innerHTML = "Username/Password combination doesn't match!";
-	 				document.getElementById("PasswordLogin").innerHTML = "";
-					document.getElementById("username_comment").style.color = "red";
-	 			}
-	 		}
-	 	}
-	 	xmlhttp.open("POST","login.php",true);
-	 	xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	 	xmlhttp.send("param=" + encodeURIComponent(param));
+ 	xmlhttp.onreadystatechange=function() {
+ 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+ 			if (xmlhttp.responseText=="false") {
+ 				document.getElementById("login_comment").innerHTML = "Username/Password combination doesn't match!";
+ 				document.getElementById("PasswordLogin").innerHTML = "";
+				document.getElementById("login_comment").style.color = "red";
+ 			} else {
+ 				window.location.href = "index.php";
+ 			}
+ 		}
+ 	}
+ 	
+ 	xmlhttp.open("POST", "login.php", true);
+ 	xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+ 	xmlhttp.send("username=" + username + "&password=" + password + "&token=" + csrftoken);
 }
 
 function login() {
 	var username = document.getElementById("UsernameLogin").value;
 	var password = document.getElementById("PasswordLogin").value;
+	var csrftoken = document.getElementById("csrf-token").value;
 
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
@@ -56,12 +46,12 @@ function login() {
 					password = CryptoJS.SHA256(password).toString();
 				};
 
-				doLogin(username, password);
+				doLogin(username, password, csrftoken);
 			}
 		}
 	}
 
-	xmlhttp.open("GET", "get_n.php?username="+username, true);
+	xmlhttp.open("GET", "get_n.php?username=" + username + "&token=" + csrftoken, true);
 	xmlhttp.send();
 
 	return false;

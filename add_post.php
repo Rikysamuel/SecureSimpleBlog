@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Register USer">
-<meta name="author" content="Rikysamuel">
+<meta name="description" content="Deskripsi Blog">
+<meta name="author" content="Judul Blog">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
@@ -29,45 +29,54 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
-<title>Simple Blog</title>
+<title>Simple Blog | Tambah Post</title>
 
 
 </head>
 
-
 <body class="default">
-    <div class="wrapper">
+<div class="wrapper">
 
-        <nav class="nav">
-		    <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
-		</nav>
+<nav class="nav">
+    <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
+    <ul class="nav-primary">
+        <li><a href="#">Username</a></li>
+    </ul>
+</nav>
 
+<article class="art simple post">
+    
+    
+    <h2 class="art-title" style="margin-bottom:40px">-</h2>
 
-        <article class="art simple post"><br/><br/>
-            <h2 class="art-title" style="margin-bottom:40px">-</h2>
-            <div class="art-body">
-                <div class="art-body-inner">
-                    <h2>Login</h2>
+    <div class="art-body">
+        <div class="art-body-inner">
+            <h2>Tambah Post</h2>
 
-                    <div id="contact-area">
-                        <form id="Form" onsubmit="return login()">
-                            <label for="Username_login">Username:</label>
-                            <input type="text" id="UsernameLogin" label="Username_login">
-                            
-                            <label for="Password_login">Password:</label>
-                            <input type="password" id="PasswordLogin" label="Password_login"/>
+            <div id="contact-area">
+                <form method="post" id="form_submit" enctype="multipart/form-data" onSubmit="return checkformat()">
+                    <label for="Judul">Judul:</label>
+                    <input type="text" name="Judul" id="Judul">
+                    <p id="title_comment"></p>
 
-                            <br/><br/>
-                            <input type="submit" value="Login" class="submit-button"/>
-                            <p id="login_comment"></p>
-                        </form>
-                    </div>
-                </div>
+                    <label for="Tanggal">Tanggal:</label>
+                    <input type="text" name="Tanggal" id="Tanggal" placeholder="yyyy-mm-dd">
+                    <p id="date_comment"></p>
+
+                    <label for="image">Gambar:</label>
+                    <input type="file" name="image" id="image" onChange="checkImage(this);">
+                    <p id="img_comment"></p>
+
+                    <label for="Konten">Konten:</label>
+                    <textarea name="Konten" rows="20" cols="20" id="Konten"></textarea>
+                    
+                    <input type="submit" id="submit" value="Simpan" class="submit-button">
+                </form>
             </div>
-        </article>
+        </div>
     </div>
-</body>
 
+</article>
 
 <footer class="footer">
     <div class="back-to-top"><a href="">Back to top</a></div>
@@ -88,11 +97,7 @@
 <script type="text/javascript" src="assets/js/fittext.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/components/core-min.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/rollups/aes.js"></script>
-<script type="text/javascript" src="assets/js/CryptoJS/rollups/sha256.js"></script>
-<script type="text/javascript" src="assets/js/login.js"></script>
-
+<script type="text/javascript" src="assets/js/confirm.js"></script>
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';
 
