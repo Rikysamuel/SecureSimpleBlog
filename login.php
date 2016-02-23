@@ -22,24 +22,26 @@
 				$date = date_create();
 				$content = $row["Name"] + $row["Username"] + $row["email"] + date_timestamp_get($date);
 				$session_token = hash("sha256", $content);
+
+
+				
 	    		
-				$sqlupdate="UPDATE users SET password='$password', n='$n', last_login='$now' WHERE username='$username'";
+				$sqlupdate="UPDATE users SET password='$password', n='$n', last_login='$now' , last_session='$session_token' WHERE username='$username'";
 
 				if ($db_link->query($sqlupdate) === TRUE) {
-					// recreate the session
+
 					session_unset();
 					// session_destroy();
 					session_regenerate_id();
-					session_start();
 
 					// CREATE USER-SESSION
 					$_SESSION["name"] = $row["Name"];
 					$_SESSION["user-id"] = $row["Username"];
 					$_SESSION["token"] = $session_token;
-
+					
 					unset($_GET['tok']);
 					
-				    echo "success";
+				    echo $_SESSION["token"];
 				} else {
 					echo "false";
 				    // echo "Error updating record: " . $db_link->error;

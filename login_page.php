@@ -98,6 +98,7 @@
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
+<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">

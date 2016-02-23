@@ -44,7 +44,8 @@
   if (isset($_SESSION["token"])) {
     echo '<body class="default"">';
   } else {
-    echo '<body class="default" onload="cookieLogin()">';
+    echo '<body class="default" onload="cookieLogin(\''.$_SESSION["csrf-token"].'\')">';
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
   }
 ?>
 <div class="wrapper">
@@ -66,8 +67,8 @@
                           &nbsp;
                           <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
                           &nbsp;
+                          <input type="hidden" name="csrf-token" id="csrf-token" value="'.$_SESSION["csrf-token"].'"/>
                           <input type="submit" value="Login!" class="submit-button"/>
-                          <input type="hidden" id="csrf-token" value="'; echo $_SESSION["csrf-token"]; echo '"/>
                       </li>
                       <p id="login_comment" style="margin-bottom: -11px;"><br/></p>
                       <li style="color:blue;margin-left:0px;">Don\'t have an account? You can <a href="register.php" style="color:red"> register here <a/>.
@@ -141,7 +142,7 @@
 <script type="text/javascript" src="assets/js/posting.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
-<script type="text/javascript" src="assets/js/checkcookie.js"></script>
+<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
 
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';

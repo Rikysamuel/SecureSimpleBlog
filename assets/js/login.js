@@ -1,4 +1,4 @@
-function doLogin(username, password, csrftoken) {
+function doLogin(username, password, csrftoken,rememberme) {
 	if (window.XMLHttpRequest) {
 	 	xmlhttp=new XMLHttpRequest();
 	}
@@ -13,6 +13,9 @@ function doLogin(username, password, csrftoken) {
  				document.getElementById("PasswordLogin").innerHTML = "";
 				document.getElementById("login_comment").style.color = "red";
  			} else {
+ 				if(rememberme){
+ 					setCookie("cookieid",xmlhttp.responseText,604800000); // cookie di set dengan batas expire 1 minggu	
+ 				}
  				window.location.href = "index.php";
  			}
  		}
@@ -27,6 +30,7 @@ function login() {
 	var username = document.getElementById("UsernameLogin").value;
 	var password = document.getElementById("PasswordLogin").value;
 	var csrftoken = document.getElementById("csrf-token").value;
+	var rememberme = document.getElementById("remember").checked;
 
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
@@ -46,7 +50,7 @@ function login() {
 					password = CryptoJS.SHA256(password).toString();
 				};
 
-				doLogin(username, password, csrftoken);
+				doLogin(username, password, csrftoken,rememberme);
 			}
 		}
 	}
@@ -56,3 +60,4 @@ function login() {
 
 	return false;
 }
+

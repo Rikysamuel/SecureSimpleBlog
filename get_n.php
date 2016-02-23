@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	// echo $_GET["token"];
 	if ($_SESSION["csrf-token"] == stripslashes(mysql_escape_string($_GET["token"]))) {
 		$username = stripslashes(mysql_escape_string($_GET['username']));
 
