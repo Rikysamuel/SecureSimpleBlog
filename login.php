@@ -28,7 +28,8 @@
 				if ($db_link->query($sqlupdate) === TRUE) {
 					// recreate the session
 					session_unset();
-					session_destroy();
+					// session_destroy();
+					session_regenerate_id();
 					session_start();
 
 					// CREATE USER-SESSION

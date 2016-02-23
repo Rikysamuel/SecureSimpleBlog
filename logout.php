@@ -4,6 +4,7 @@
 		header('Location: index.php');
 	}
 	session_unset();
-	session_destroy();
+	// session_destroy();
+	session_regenerate_id();
 	header('Location: index.php');
 ?>
