@@ -2,7 +2,12 @@
     session_start();
     $params = session_get_cookie_params();
     setcookie("PHPSESSID", session_id(), 0, $params["path"], $params["domain"], true, true);
+    if(isset($_COOKIE["cookieid"])){
+      setcookie("cookieid", $_COOKIE["cookieid"], 0, $params["path"], $params["domain"], true, true);
+    }
+
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -143,6 +148,7 @@
 <script type="text/javascript" src="assets/js/sha256.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 <script type="text/javascript" src="assets/js/cookiefunc.js"></script>
+
 
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';
