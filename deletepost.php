@@ -21,7 +21,7 @@
       echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
 
-    $id = $_GET['var'];
+    $id = stripslashes(mysql_escape_string($_GET['var']));
 
 	$sqlupdate="DELETE FROM my_db.posting WHERE posting.ID=$id";
 	if (!mysqli_query($link,$sqlupdate)) {

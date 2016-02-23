@@ -2,7 +2,7 @@
 	session_start();
 
 	if (($_SESSION['csrf-token']) == $_GET['csrftoken']) {
-		$username = mysql_escape_string($_GET['username']);
+		$username = stripslashes(mysql_escape_string($_GET['username']));
 
 		// db connection
 		$link = mysqli_connect('localhost','root','','my_db');

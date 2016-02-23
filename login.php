@@ -8,8 +8,8 @@
 		  die("Failed to connect to MySQL: " . mysql_error());
 		}
 
-		$username = mysql_escape_string($_POST["username"]);
-		$password = mysql_escape_string($_POST["password"]);
+		$username = stripslashes(mysql_escape_string($_POST["username"]));
+		$password = stripslashes(mysql_escape_string($_POST["password"]));
 		$h_password = hash("sha256", $password);
 
 		$result = mysqli_query($db_link, "SELECT * FROM users WHERE username='$username'");
@@ -35,10 +35,12 @@
 					$_SESSION["name"] = $row["Name"];
 					$_SESSION["user-id"] = $row["Username"];
 					$_SESSION["token"] = $session_token;
+
+					unset($_GET['tok']);
 					
 				    echo "success";
 				} else {
-					echo "3 false";
+					echo "false";
 				    // echo "Error updating record: " . $db_link->error;
 				}
 	    	} else {
@@ -49,6 +51,6 @@
 		// sql close connection
 		$db_link->close();
 	} else {
-		echo "1 false";
+		echo "false";
 	}
 ?>

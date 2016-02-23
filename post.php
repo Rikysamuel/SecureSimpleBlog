@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    if (isset($_GET['tok'])) {
+        if ($_SESSION['csrf-token'] != $_GET['tok']) {
+            header('Location: index.php');
+        }
+    }
+
+    $_SESSION["csrf-token"] = hash("sha256", uniqid());
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,14 +54,31 @@ echo '<body class="default" onload="req_komentar('.$id.')">';
 echo '<div class="wrapper">
 
         <nav class="nav">
-            <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
-            <ul class="nav-primary">
-                <li><a href="add_post.php">+ Tambah Post</a></li>
-            </ul>
-        </nav>
+            <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>';
+        if (isset($_SESSION["token"])) {
+            echo '<ul class="nav-primary">
+                      <li><a href=\'logout.php\' style="color:red;">'; echo $_SESSION["name"]; echo ' (logout)</a></li>&nbsp;';
+                echo "|";      
+                echo '<li><a href="add_post.php">+ Tambah Post</a></li></ul>';
+        } else {
+            echo '<ul class="nav-primary">
+                      <form method="post" id="login_index" onsubmit="return login()">
+                          <li>
+                              <input type="text" id="UsernameLogin" name="UsernameLogin" placeholder="Username"/>
+                              &nbsp;
+                              <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
+                              &nbsp;
+                              <input type="submit" value="Login!" class="submit-button"/>
+                              <input type="hidden" id="csrf-token" value="'.$_SESSION["csrf-token"].'"/>
+                          </li>
+                          <p id="login_comment" style="margin-bottom: -11px;"><br/></p>
+                          <li style="color:blue;margin-left:0px;">Dont have an account? You can <a href="register.php" style="color:red"> register here</a>.</li>
+                      </form>
+                  </ul>';
+          }
+    echo '</nav>';
 
-        <article class="art simple post">
-    ';
+    echo '<article class="art simple post">';
         //koneksi ke database
         $link=mysqli_connect("localhost","root","","my_db");
         if (mysqli_connect_errno()) {
@@ -70,8 +97,7 @@ echo '<div class="wrapper">
         $konten = str_replace("\n", "<br/>", $konten);
 
         //print data dari database ke halaman html
-        echo '
-            <header class="art-header">
+        echo ' <header class="art-header">
                 <div class="art-header-inner" style="margin-top: 0px; opacity: 1;">
                     <time class="art-time">'.$tanggal['TANGGAL'].'</time>
                     <h2 class="art-title">'.$judul['JUDUL'].'</h2>
@@ -128,16 +154,11 @@ echo '<div class="wrapper">
     <!-- <div class="footer-nav"><p></p></div> -->
     <div class="psi">&Psi;</div>
     <aside class="offsite-links">
-        Asisten IF3110 /
-        <a class="rss-link" href="#rss">RSS</a> /
+        [IF4033] Information Assurance and Security
         <br>
-        <a class="twitter-link" href="http://twitter.com/YoGiiSinaga">Yogi</a> /
-        <a class="twitter-link" href="http://twitter.com/sonnylazuardi">Sonny</a> /
-        <a class="twitter-link" href="http://twitter.com/fathanpranaya">Fathan</a> /
+        <a class="twitter-link" href="#">13512089 - Rikysamuel</a>
         <br>
-        <a class="twitter-link" href="#">Renusa</a> /
-        <a class="twitter-link" href="#">Kelvin</a> /
-        <a class="twitter-link" href="#">Yanuar</a> /
+        <a class="twitter-link" href="#">13512096 - Kevin Huang</a>
         
     </aside>
 </footer>
@@ -148,6 +169,8 @@ echo '<div class="wrapper">
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/respond.min.js"></script>
 <script type="text/javascript" src="assets/js/posting.js"></script>
+<script type="text/javascript" src="assets/js/sha256.js"></script>
+<script type="text/javascript" src="assets/js/login.js"></script>
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';
 

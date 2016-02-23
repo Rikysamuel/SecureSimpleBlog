@@ -90,7 +90,7 @@
                 for($it=0;$it<sizeof($row)-1;$it++){
                   echo '<li class="art-list-item">';
                     echo '<div class="art-list-item-title-and-time">';
-                      echo '<h2 class ="art-list-title"><a href="post.php?var='.$row[$it][0].'">'.$row[$it][1].'</a></h2>';
+                      echo '<h2 class ="art-list-title"><a href="post.php?var='.$row[$it][0].'&tok='.$_SESSION['csrf-token'].'">'.$row[$it][1].'</a></h2>';
                       echo '<div class="art-list-time">'.$row[$it][2].'</div>';
                       echo '<div class="art-list-time"><span style="color:#F40034;">&#10029;</span> By '.$row[$it][6].'</div>';
                     echo '</div>';
