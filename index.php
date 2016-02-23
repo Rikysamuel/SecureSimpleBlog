@@ -1,7 +1,4 @@
 <?php
-  // ini_set('session.cookie_httponly', 1);
-  //   ini_set('session.use_only_cookies', 1);
-  //   ini_set('session.cookie_secure', 1);
     session_start();
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
 ?>
@@ -41,7 +38,13 @@
 
 </head>
 
-<body class="default">
+<?php
+  if (isset($_SESSION["token"])) {
+    echo '<body class="default"">';
+  } else {
+    echo '<body class="default" onload="cookieLogin()">';
+  }
+?>
 <div class="wrapper">
 
 <nav class="nav">
@@ -137,6 +140,7 @@
 <script type="text/javascript" src="assets/js/posting.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
+<script type="text/javascript" src="assets/js/checkcookie.js"></script>
 
 <script type="text/javascript">
   var ga_ua = '{{! TODO: ADD GOOGLE ANALYTICS UA HERE }}';
