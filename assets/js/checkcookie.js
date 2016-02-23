@@ -1,4 +1,4 @@
-function checkLogin() {
+function cookieLogin() {
 	// chek if cookie exist
 	// if exist, match to the database (last_session)
 		// if match,
