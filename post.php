@@ -116,7 +116,7 @@ echo '<div class="wrapper">
                     <div id="contact-area">
                         <form method="post" id="form_comment" onSubmit="return false">
                             <label for="Nama">Nama:</label>
-                            <input type="text" name="Nama" id="Nama" placeholder="Boleh kosong">
+                            <input type="text" name="Nama" id="Nama" placeholder="(Optional)">
             
                             <label for="Email">Email:</label>
                             <input type="text" name="Email" id="Email">
@@ -124,6 +124,8 @@ echo '<div class="wrapper">
                         
                             <label for="Komentar">Komentar:</label>
                             <textarea name="Komentar" rows="20" cols="20" id="Komentar"></textarea>
+
+                            <input type="hidden" id="csrf-token" value="'.$_SESSION["csrf-token"].'"/>
 
                             <input type="submit" name="submit" value="Kirim" class="submit-button" onClick="ins_komentar('.$id.')">
                         </form>

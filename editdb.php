@@ -11,8 +11,8 @@
     $id = $_GET['var'];
 
     //mengambil judul, tanggal, konten dari elemen id dari html
-    $judul = mysqli_real_escape_string($link,$_POST["Judul"]);
-	$konten = mysqli_real_escape_string($link,$_POST["Konten"]);
+    $judul = stripslashes(mysqli_real_escape_string($link, $_POST["Judul"]));
+	$konten = mysqli_real_escape_string($link, $_POST["Konten"]);
 
 	//mengupdate data ke database
 	$sqlupdate="UPDATE my_db.posting SET JUDUL='$judul', KONTEN='$konten' WHERE Posting.ID=$id";

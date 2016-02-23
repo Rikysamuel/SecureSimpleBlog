@@ -59,9 +59,10 @@
 	 	var xmlhttp;
 	 	var nama = document.getElementById("Nama").value;
 	 	if(nama==""){
-	 		nama="anonymous";
+	 		nama="undefined";
 	 	}
 		var komentar = document.getElementById("Komentar").value;
+		var token = document.getElementById("csrf-token").value;
 	 	if (window.XMLHttpRequest)
 	 	{
 	 		xmlhttp=new XMLHttpRequest();
@@ -84,7 +85,7 @@
 	 	}
 	 	xmlhttp.open("POST","add_comment.php",true);
 	 	xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	 	xmlhttp.send("id="+id+"&nama="+nama+"&komentar="+komentar+"&tanggal="+tanggal);
+	 	xmlhttp.send("id="+id+"&nama="+nama+"&komentar="+komentar+"&tanggal="+tanggal+"&token="+token);
  	}
  	else{
  		return false;
