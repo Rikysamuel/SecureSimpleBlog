@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2016 at 05:12 AM
+-- Generation Time: Feb 23, 2016 at 06:26 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -89,7 +89,7 @@ INSERT INTO `users` (`Name`, `Username`, `email`, `password`, `n`, `last_login`)
 ('Rikysamuel', '12qwsxcv', 'rikz.samuel@gmail.com', 'e1b074c1e34eacf08b1d06ae4c93cf071f10c4022bf736cdaf6f3c230d72f1ca', 10000, '0000-00-00 00:00:00'),
 ('Rikysamuel', 'ssss', 'rikz.samuel@gmail.com', '9bb5f1b957a00dbd477c7ef5d325c0f7d28c037b266d97f2d521dd48bdad8287', 10000, '0000-00-00 00:00:00'),
 ('Rikysamuel_T', 'ssssa', 'rikz.samuel@gmail.com', '368ab0350ef3d746e8f43871edaf7932b63618cfb253f05837c451a1a80e5d9c', 9995, '2016-02-23 03:44:55'),
-('testname', 'test', 'testemail@testemail.com', 'd626950e85f21ae9a61b3c33fa1ab220db1b7c9df7ede920caa5b0c3aea4b71d', 9937, '2016-02-23 05:04:09'),
+('testname', 'test', 'testemail@testemail.com', 'dea652be5b1c1d23519a4a670b293e51bbefc58d6ecd944ad344347421d0d9ca', 9931, '2016-02-23 06:05:28'),
 ('testregister', 'testregister', 'test@test.com', '6a101ec71918995a5212d0fa4a3be423ca671fa2ce6ba12ba253dbc5e1689e52', 9999, '2016-02-22 14:27:00');
 
 --
