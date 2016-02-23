@@ -59,7 +59,6 @@
             echo '<li><a href="add_post.php">+ Tambah Post</a></li>
               </ul>';
       } else {
-        $_SESSION["csrf-token"] = hash("sha256", uniqid());
         echo '<ul class="nav-primary">
                   <form method="post" id="login_index" onsubmit="return login()">
                       <li>
