@@ -2,9 +2,9 @@
     session_start();
     $params = session_get_cookie_params();
     setcookie("PHPSESSID", session_id(), 0, $params["path"], $params["domain"], true, true);
-    /*if(isset($_COOKIE["cookieid"])){
+    if(isset($_COOKIE["cookieid"])){
       setcookie("cookieid", $_COOKIE["cookieid"],0, $params["path"], $params["domain"], true, true);
-    }*/
+    }
 
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
 
@@ -108,12 +108,12 @@
                     echo '<div class="art-list-item-title-and-time">';
                       echo '<h2 class ="art-list-title"><a href="post.php?var='.$row[$it][0].'&tok='.$_SESSION['csrf-token'].'">'.$row[$it][1].'</a></h2>';
                       echo '<div class="art-list-time">'.$row[$it][2].'</div>';
-                      echo '<div class="art-list-time"><span style="color:#F40034;">&#10029;</span> By '.$row[$it][6].'</div>';
+                      echo '<div class="art-list-time"><span style="color:#F40034;">&#10029;</span> By '.$row[$it][7].'</div>';
                     echo '</div>';
                     echo '<p>'.substr($row[$it][3],0,200).'&hellip;</p>';
                     echo '<p>';
                     if (isset($_SESSION["token"])) {
-                      if ($_SESSION["user-id"] == $row[$it][7]) {
+                      if ($_SESSION["user-id"] == $row[$it][8]) {
                         echo '<a href="editpost.php?var='.$row[$it][0].'&id='.$_SESSION['user-id'].'&tok='.$_SESSION['csrf-token'].'">Edit</a> | <a id="d_'.$row[$it][0].'" onclick="return hapus(\''.$row[$it][0].'\',\''.$_SESSION['user-id'].'\',\''.$_SESSION['csrf-token'].'\');" href="javascript:;">Hapus</a>';
                       }
                     }
