@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.12
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2016 at 06:26 AM
--- Server version: 5.6.25
--- PHP Version: 5.6.11
+-- Generation Time: Feb 24, 2016 at 07:16 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `my_db`
@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS `komentar` (
   `id` int(11) NOT NULL,
   `nama` varchar(255) NOT NULL,
   `komentar` varchar(255) NOT NULL,
-  `tanggal` date NOT NULL
+  `tanggal` date NOT NULL,
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -47,13 +48,15 @@ INSERT INTO `komentar` (`id`, `nama`, `komentar`, `tanggal`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `posting` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `JUDUL` varchar(100) DEFAULT NULL,
   `TANGGAL` date DEFAULT NULL,
   `KONTEN` varchar(8000) DEFAULT NULL,
   `USERNAME` varchar(50) NOT NULL,
-  `CREATED_BY` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+  `CREATED_BY` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `username` (`USERNAME`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `posting`
@@ -78,53 +81,23 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `n` int(4) NOT NULL,
-  `last_login` datetime NOT NULL
+  `last_login` datetime NOT NULL,
+  `last_session` varchar(255) NOT NULL,
+  PRIMARY KEY (`Username`),
+  KEY `Username` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`Name`, `Username`, `email`, `password`, `n`, `last_login`) VALUES
-('Rikysamuel', '12qwsxcv', 'rikz.samuel@gmail.com', 'e1b074c1e34eacf08b1d06ae4c93cf071f10c4022bf736cdaf6f3c230d72f1ca', 10000, '0000-00-00 00:00:00'),
-('Rikysamuel', 'ssss', 'rikz.samuel@gmail.com', '9bb5f1b957a00dbd477c7ef5d325c0f7d28c037b266d97f2d521dd48bdad8287', 10000, '0000-00-00 00:00:00'),
-('Rikysamuel_T', 'ssssa', 'rikz.samuel@gmail.com', '368ab0350ef3d746e8f43871edaf7932b63618cfb253f05837c451a1a80e5d9c', 9995, '2016-02-23 03:44:55'),
-('testname', 'test', 'testemail@testemail.com', 'dea652be5b1c1d23519a4a670b293e51bbefc58d6ecd944ad344347421d0d9ca', 9931, '2016-02-23 06:05:28'),
-('testregister', 'testregister', 'test@test.com', '6a101ec71918995a5212d0fa4a3be423ca671fa2ce6ba12ba253dbc5e1689e52', 9999, '2016-02-22 14:27:00');
+INSERT INTO `users` (`Name`, `Username`, `email`, `password`, `n`, `last_login`, `last_session`) VALUES
+('Rikysamuel', '12qwsxcv', 'rikz.samuel@gmail.com', 'e1b074c1e34eacf08b1d06ae4c93cf071f10c4022bf736cdaf6f3c230d72f1ca', 10000, '2016-02-24 05:08:36', ''),
+('Rikysamuel', 'ssss', 'rikz.samuel@gmail.com', '9bb5f1b957a00dbd477c7ef5d325c0f7d28c037b266d97f2d521dd48bdad8287', 10000, '2016-02-24 05:08:36', ''),
+('Rikysamuel_T', 'ssssa', 'rikz.samuel@gmail.com', '368ab0350ef3d746e8f43871edaf7932b63618cfb253f05837c451a1a80e5d9c', 9995, '2016-02-24 05:08:36', ''),
+('testname', 'test', 'testemail@testemail.com', '0c38f9f21b7e259d118a56bce4e3ec7397d08d46c73b0778dee396e57e5aca31', 9855, '2016-02-24 07:07:54', '138703b3000d15fbff59cc7ba0b2a2468613c7586751e873a5ce21c51a632b9d'),
+('testregister', 'testregister', 'test@test.com', '6a101ec71918995a5212d0fa4a3be423ca671fa2ce6ba12ba253dbc5e1689e52', 9999, '2016-02-24 05:08:36', '');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `komentar`
---
-ALTER TABLE `komentar`
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `posting`
---
-ALTER TABLE `posting`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `username` (`USERNAME`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`Username`),
-  ADD KEY `Username` (`Username`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `posting`
---
-ALTER TABLE `posting`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- Constraints for dumped tables
 --

@@ -18,7 +18,8 @@
 		$konten = mysqli_real_escape_string($db_link, $_POST["Konten"]);
 		$username = mysqli_real_escape_string($db_link, $_SESSION["user-id"]);
 		$name = mysqli_real_escape_string($db_link, $_SESSION["name"]);
-		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+		$temp_name = hash(uniqid());
+		if (move_uploaded_file($_FILES[$file][$tmp_name], $file)) {
 			// db query
 			$sqlinsert="INSERT INTO Posting(JUDUL, TANGGAL, KONTEN, USERNAME, CREATED_BY) VALUES('$judul','$tanggal','$konten', '$username', '$name')";
 			if (!mysqli_query($db_link,$sqlinsert)) {
