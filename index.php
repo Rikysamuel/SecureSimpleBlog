@@ -2,9 +2,9 @@
     session_start();
     $params = session_get_cookie_params();
     setcookie("PHPSESSID", session_id(), 0, $params["path"], $params["domain"], true, true);
-    if(isset($_COOKIE["cookieid"])){
-      setcookie("cookieid", $_COOKIE["cookieid"], 0, $params["path"], $params["domain"], true, true);
-    }
+    /*if(isset($_COOKIE["cookieid"])){
+      setcookie("cookieid", $_COOKIE["cookieid"],0, $params["path"], $params["domain"], true, true);
+    }*/
 
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
 
@@ -36,6 +36,8 @@
 <link rel="stylesheet" type="text/css" href="assets/css/screen.css" />
 <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
+<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
+
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -49,8 +51,7 @@
   if (isset($_SESSION["token"])) {
     echo '<body class="default"">';
   } else {
-    echo '<body class="default" onload="cookieLogin(\''.$_SESSION["csrf-token"].'\')">';
-    $_SESSION["csrf-token"] = hash("sha256", uniqid());
+    echo '<body class="default" onload="return cookieLogin(\''.$_SESSION["csrf-token"].'\')">';
   }
 ?>
 <div class="wrapper">
@@ -72,6 +73,8 @@
                           &nbsp;
                           <input type="password" id="PasswordLogin" name="PasswordLogin" placeholder="Password"/>
                           &nbsp;
+                           <input id="remember" type="checkbox">
+                            &nbsp;
                           <input type="hidden" name="csrf-token" id="csrf-token" value="'.$_SESSION["csrf-token"].'"/>
                           <input type="submit" value="Login!" class="submit-button"/>
                       </li>
@@ -147,7 +150,10 @@
 <script type="text/javascript" src="assets/js/posting.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
-<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("remember").setAttribute("title", "Remember Me");
+</script>
 
 
 <script type="text/javascript">

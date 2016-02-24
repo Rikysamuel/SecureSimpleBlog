@@ -14,7 +14,7 @@ function doLogin(username, password, csrftoken,rememberme) {
 				document.getElementById("login_comment").style.color = "red";
  			} else {
  				if(rememberme){
- 					setCookie("cookieid",xmlhttp.responseText,604800000); // cookie di set dengan batas expire 1 minggu	
+ 					setCookie("cookieid",xmlhttp.responseText,7); // cookie di set dengan batas expire 1 minggu	
  				}
  				window.location.href = "index.php";
  			}
