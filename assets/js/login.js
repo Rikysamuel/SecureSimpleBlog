@@ -1,4 +1,4 @@
-function doLogin(username, password, csrftoken,rememberme) {
+function doLogin(username, password, csrftoken, rememberme) {
 	if (window.XMLHttpRequest) {
 	 	xmlhttp=new XMLHttpRequest();
 	}
@@ -45,12 +45,13 @@ function login() {
 				document.getElementById("login_comment").innerHTML = "Username doesn't exist!";
 				document.getElementById("login_comment").style.color = "red";
 			} else {
-				var n = parseInt(xmlhttp.responseText);
+				var ret = JSON.parse(xmlhttp.responseText);
+				var n = parseInt(ret[0]);
 				for (var i=0; i<n-1; i++) {
 					password = CryptoJS.SHA256(password).toString();
 				};
 
-				doLogin(username, password, csrftoken,rememberme);
+				doLogin(username, password, ret[1], rememberme);
 			}
 		}
 	}

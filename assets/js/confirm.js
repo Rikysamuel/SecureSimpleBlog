@@ -45,27 +45,25 @@ function isAlphaNumeric(str) {
 };
 
 function checkImage(filename) {
-  filename = filename.files[0].name;
-  if (occurrences(filename, ".") == 1) {
-    var ext = filename.substring(filename.lastIndexOf(".") + 1);
-    filename = filename.substring(0, filename.lastIndexOf("."));
-    if (validFileExtensions.indexOf(ext) > -1) {
-      if (isAlphaNumeric(filename)) {
-        document.getElementById("img_comment").innerHTML = "File ok";
-        document.getElementById("img_comment").style.color = "green";
-        imageVal = true;
-      } else {
-        document.getElementById("img_comment").innerHTML = "Filename should not contains special chars";
-        document.getElementById("img_comment").style.color = "red";
-      }
-    } else {
-        document.getElementById("img_comment").innerHTML = "Extension unknown";
-        document.getElementById("img_comment").style.color = "red";
-    }
-  } else {
-    document.getElementById("img_comment").innerHTML = "File unknown";
-      document.getElementById("img_comment").style.color = "red";
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
   }
+  else {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange=function() {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+      if (xmlhttp.responseText!="true") {
+        
+      } else {
+      }
+    }
+  }
+  
+  xmlhttp.open("POST", "uploadfile.php", true);
+  xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  xmlhttp.send("username=" + username + "&password=" + password + "&token=" + csrftoken);
 }
 
 //fungsi untuk validasi format pada form tambah post
@@ -117,7 +115,12 @@ function checkformat() {
       else{ //jika input tanggal sama dengan hari ini
         document.getElementById("date_comment").innerHTML="ok!";
         document.getElementById("date_comment").style.color="green";
-        document.getElementById("form_submit").action = "new_post.php";
+        if (imageVal) {
+          document.getElementById("form_submit").action = "new_post.php";
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }

@@ -16,14 +16,22 @@
 		// check whether username is already exist
 		if (mysqli_num_rows($result) > 0) {
 		    while ($row = mysqli_fetch_assoc($result)) {
-		    	echo $row["n"];
+		    	$_SESSION["csrf-token"] = hash("sha256", uniqid());
+
+		    	$ret[0] = $row['n'];
+		    	$ret[1] = $_SESSION["csrf-token"];
+
+		    	echo json_encode($ret);
 		    }
 		} else {
 			echo "false";
 		}
 
 		// close connection
-		mysqli_close($link);	
+		mysqli_close($link);
+
+		// regenerate csrf-token
+
 	} else {
 		echo "false";
 	}
