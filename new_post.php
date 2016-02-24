@@ -22,6 +22,10 @@
 		$file_extension = pathinfo($_FILES["Image"]["name"], PATHINFO_EXTENSION);
 		$serverfilename = uniqid() . "." . $file_extension;
 		$target_file = $target_dir . $serverfilename;
+		while(file_exists($target_file)) {
+			$serverfilename = uniqid() . "." . $file_extension;
+		    $target_file = $target_dir . $serverfilename;
+		}
 		if (move_uploaded_file($_FILES["Image"]["tmp_name"], $target_file)) {
 	        //File uploaded successfully
 	        // db query
