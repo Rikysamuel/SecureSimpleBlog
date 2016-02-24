@@ -2,9 +2,9 @@
     session_start();
     $params = session_get_cookie_params();
     setcookie("PHPSESSID", session_id(), 0, $params["path"], $params["domain"], true, true);
-    if(isset($_COOKIE["cookieid"])){
-      setcookie("cookieid", $_COOKIE["cookieid"],0, $params["path"], $params["domain"], true, true);
-    }
+    // if(isset($_COOKIE["cookieid"])){
+    //   setcookie("cookieid", $_COOKIE["cookieid"],0, $params["path"], $params["domain"], true, true);
+    // }
 
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
 
@@ -36,8 +36,6 @@
 <link rel="stylesheet" type="text/css" href="assets/css/screen.css" />
 <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
-<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
-
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -60,13 +58,13 @@
     <a style="border:none;" id="logo" href="index.php"><h1>Simple<span>-</span>Blog</h1></a>
     <?php
       if (isset($_SESSION["token"])) {
-        echo '<ul class="nav-primary">
+        echo '<ul class="nav-primary" id="nav_id_login">
                   <li><a href=\'logout.php\' style="color:red;">'; echo $_SESSION["name"]; echo ' (logout)</a></li>&nbsp;';
             echo "|";      
             echo '<li><a href="add_post.php">+ Tambah Post</a></li>
               </ul>';
       } else {
-        echo '<ul class="nav-primary">
+        echo '<ul class="nav-primary" id="nav_id_login">
                   <form method="post" id="login_index" onsubmit="return login()">
                       <li>
                           <input type="text" id="UsernameLogin" name="UsernameLogin" placeholder="Username"/>
@@ -149,6 +147,7 @@
 <script type="text/javascript" src="assets/js/confirm.js"></script>
 <script type="text/javascript" src="assets/js/posting.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
+<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">

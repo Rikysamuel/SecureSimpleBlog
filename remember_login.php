@@ -34,8 +34,11 @@
 					$_SESSION["token"] = $session_token;
 					
 					unset($_GET['tok']);
+
+					$ret[0] = $_SESSION["token"];
+					$ret[1] = $_SESSION["name"];
 					
-				    echo $_SESSION["token"];
+				    echo json_encode($ret);
 				} else {
 					echo "false";
 				    // echo "Error updating record: " . $db_link->error;

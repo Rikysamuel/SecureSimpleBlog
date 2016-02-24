@@ -72,7 +72,7 @@
                     <p id="date_comment"></p>
 
                     <label for="image">Gambar:</label>
-                    <input type="file" name="Image" id="Image" onChange="checkImage(this);">
+                    <input type="file" name="Image" id="Image">
                     <p id="img_comment"></p>
 
                     <label for="Konten">Konten:</label>

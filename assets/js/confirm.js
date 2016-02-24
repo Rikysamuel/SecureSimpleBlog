@@ -1,6 +1,3 @@
-var validFileExtensions = ["jpg", "jpeg", "bmp", "png"];
-var imageVal = false;
-
 function hapus(id, user, token) {
   var answer = confirm("Are you sure want to delete this post?");
   
@@ -43,28 +40,6 @@ function isAlphaNumeric(str) {
   }
   return true;
 };
-
-function checkImage(filename) {
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  }
-  else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-
-  xmlhttp.onreadystatechange=function() {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-      if (xmlhttp.responseText!="true") {
-        
-      } else {
-      }
-    }
-  }
-  
-  xmlhttp.open("POST", "uploadfile.php", true);
-  xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-  xmlhttp.send("username=" + username + "&password=" + password + "&token=" + csrftoken);
-}
 
 //fungsi untuk validasi format pada form tambah post
 function checkformat() {
@@ -115,12 +90,9 @@ function checkformat() {
       else{ //jika input tanggal sama dengan hari ini
         document.getElementById("date_comment").innerHTML="ok!";
         document.getElementById("date_comment").style.color="green";
-        if (imageVal) {
-          document.getElementById("form_submit").action = "new_post.php";
-          return true;
-        } else {
-          return false;
-        }
+        document.getElementById("form_submit").action = "new_post.php";
+        
+        return true;
       }
     }
   }

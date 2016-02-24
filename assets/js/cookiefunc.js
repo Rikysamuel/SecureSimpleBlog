@@ -20,16 +20,11 @@ function cookieLogin(csrftoken) {
 	 	xmlhttp.onreadystatechange=function() {
 	 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 	 			if (xmlhttp.responseText != "false") {
-	 				setCookie("cookieid", xmlhttp.responseText, 7); // cookie di set dengan batas expire 1 minggu	
- 					window.location.href = "index.php";
+	 				var ret = JSON.parse(xmlhttp.responseText);
+	 				setCookie("cookieid", ret[0], 7); // cookie di set dengan batas expire 1 minggu	
+ 					document.getElementById('nav_id_login').innerHTML = "";
+ 					document.getElementById('nav_id_login').innerHTML = "<li><a href='logout.php' style='color:red;'>" + ret[1] + " (logout)</a></li>&nbsp; | <li><a href='add_post.php'>+ Tambah Post</a></li>";
 	 			}
-	 			/*if (xmlhttp.responseText=="false") {
-	 				document.cookie = "cookieid=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; //Cookie delete if cookie doesn't match
-	 			} else {
- 					setCookie("cookieid", xmlhttp.responseText, 7); // cookie di set dengan batas expire 1 minggu	
- 					window.location.href = "index.php";
-	 			}*/
-	 			
 	 		}
 	 	}
 
@@ -39,12 +34,6 @@ function cookieLogin(csrftoken) {
 
  		return false;
 	}
-
-	
-	// chek if cookie exist
-	// if exist, match to the database (last_session)
-		// if match,
-			// ajax request ke login_remember.php, param:old token&csrf-token
 }
 
 function getCookie(cname) {
