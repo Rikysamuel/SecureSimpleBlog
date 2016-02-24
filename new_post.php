@@ -1,5 +1,5 @@
 <?php
-	//header("Location:index.php");
+	header("Location:index.php");
 	session_start();
 	// db connection
 
@@ -17,16 +17,15 @@
 		$username = mysqli_real_escape_string($db_link, $_SESSION["user-id"]);
 		$name = mysqli_real_escape_string($db_link, $_SESSION["name"]);
 		$file = mysqli_real_escape_string($db_link, $_FILES["Image"]["name"]);
-		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-		$serverfilename = uniqid() . $imageFileType;
-
+		
 		$target_dir = "uploads/";
-
+		$file_extension = pathinfo($_FILES["Image"]["name"], PATHINFO_EXTENSION);
+		$serverfilename = uniqid() . "." . $file_extension;
 		$target_file = $target_dir . $serverfilename;
 		if (move_uploaded_file($_FILES["Image"]["tmp_name"], $target_file)) {
 	        //File uploaded successfully
 	        // db query
-			$sqlinsert="INSERT INTO Posting(JUDUL, TANGGAL, KONTEN, USERNAME, CREATED_BY, IMAGEFILENAME) VALUES('$judul','$tanggal','$konten', '$username', '$name', '$target_file')";
+			$sqlinsert="INSERT INTO Posting(JUDUL, TANGGAL, KONTEN, USERNAME, CREATED_BY, IMAGEFILENAME) VALUES('$judul','$tanggal','$konten', '$username', '$name', '$serverfilename')";
 			if (!mysqli_query($db_link,$sqlinsert)) {
 				die('Error: ' . mysqli_error($db_link));
 			}
