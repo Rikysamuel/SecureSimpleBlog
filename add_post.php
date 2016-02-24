@@ -64,19 +64,47 @@
             <div id="contact-area">
                 <form method="post" id="form_submit" enctype="multipart/form-data" onSubmit="return checkformat()">
                     <label for="Judul">Judul:</label>
-                    <input type="text" name="Judul" id="Judul">
+                    <?php 
+                        if (isset($_SESSION['judul'])) { 
+                            echo '<input type="text" name="Judul" id="Judul" value="'.$_SESSION['judul'].'">';
+                            unset($_SESSION['judul']);
+                        } else {
+                            echo '<input type="text" name="Judul" id="Judul">';
+                        }
+                    ?>
                     <p id="title_comment"></p>
 
                     <label for="Tanggal">Tanggal:</label>
-                    <input type="text" name="Tanggal" id="Tanggal" placeholder="yyyy-mm-dd">
+                    <?php 
+                        if (isset($_SESSION['tanggal'])) { 
+                            echo '<input type="text" name="Tanggal" id="Tanggal" placeholder="yyyy-mm-dd" value="'.$_SESSION['tanggal'].'">';
+                            unset($_SESSION['tanggal']);
+                        } else {
+                            echo '<input type="text" name="Tanggal" id="Tanggal" placeholder="yyyy-mm-dd">';
+                        }
+                    ?>
                     <p id="date_comment"></p>
 
                     <label for="image">Gambar:</label>
                     <input type="file" name="Image" id="Image">
-                    <p id="img_comment"></p>
+                    <?php
+                        if (isset($_SESSION['error_msg'])) {
+                            echo '<p id="img_comment" style="color:red;">'.$_SESSION['error_msg'].'</p>';
+                            unset($_SESSION['error_msg']);
+                        } else {
+                            echo '<p id="img_comment" style="color:red;"></p>';
+                        }
+                    ?>
 
                     <label for="Konten">Konten:</label>
-                    <textarea name="Konten" rows="20" cols="20" id="Konten"></textarea>
+                    <?php
+                        if (isset($_SESSION['konten'])) {
+                            echo '<textarea name="Konten" rows="20" cols="20" id="Konten">'.$_SESSION['konten'].'</textarea>';
+                            unset($_SESSION['konten']);
+                        } else {
+                            echo '<textarea name="Konten" rows="20" cols="20" id="Konten"></textarea>';
+                        }
+                    ?>
 
                     <input type="hidden" id="csrf-token" name="csrf-token" value='<?=$_SESSION["csrf-token"]; ?>'/>
                     
