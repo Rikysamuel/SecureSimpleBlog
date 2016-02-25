@@ -46,8 +46,6 @@
 
 
 <?php
-
-//mengambil nilai id dari url
 $id = $_GET['var'];
 
 echo '<body class="default" onload="req_komentar('.$id.')">';
@@ -79,36 +77,37 @@ echo '<div class="wrapper">
     echo '</nav>';
 
     echo '<article class="art simple post">';
-        //koneksi ke database
+        
+        // db connection
         $link=mysqli_connect("localhost","root","","my_db");
         if (mysqli_connect_errno()) {
           die ("Failed to connect to MySQL: " . mysqli_connect_error());
         }
 
-        //mengambil judul, tanggal, dan konten dari database
-        $judul = mysqli_query($link,"SELECT JUDUL FROM Posting WHERE ID=$id");
-        $judul = $judul->fetch_assoc();
-        $tanggal = mysqli_query($link,"SELECT TANGGAL FROM Posting WHERE ID=$id");
-        $tanggal = $tanggal->fetch_assoc();
-        $konten = mysqli_query($link,"SELECT KONTEN FROM Posting WHERE ID=$id");
-        $konten = $konten->fetch_assoc();
+        // fetch a row
+        $item = mysqli_query($link,"SELECT * FROM Posting WHERE ID=$id");
+        $item = $item->fetch_assoc();
 
         //mengganti karakter "new line" dari '\n' menjadi <br/> agar "new line" dapat terlihat dari html
-        $konten = str_replace("\n", "<br/>", $konten);
+        $item['KONTEN'] = str_replace("\n", "<br/>", $item['KONTEN']);
 
         //print data dari database ke halaman html
         echo ' <header class="art-header">
                 <div class="art-header-inner" style="margin-top: 0px; opacity: 1;">
-                    <time class="art-time">'.$tanggal['TANGGAL'].'</time>
-                    <h2 class="art-title">'.$judul['JUDUL'].'</h2>
-                    <p class="art-subtitle"></p>
+                    <time class="art-time">'.$item['TANGGAL'].'</time>
+                    <h2 class="art-title">'.$item['JUDUL'].'</h2>
+                    <p class="art-subtitle">';
+                    if ($item['IMAGEFILENAME'] != "null") {
+                      echo '<img class="img-post" src="uploads/'.$item['IMAGEFILENAME'].'" alt="'.$item['IMAGEFILENAME'].'"></img>';
+                    }
+            echo   '</p>
                 </div>
             </header>
 
             <div class="art-body">
                 <div class="art-body-inner">
                     <hr class="featured-article" />
-                        <p>'.$konten['KONTEN'].'</p>
+                        <p>'.$item['KONTEN'].'</p>
 
                     <hr />
             

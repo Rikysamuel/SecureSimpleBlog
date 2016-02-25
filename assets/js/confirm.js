@@ -99,7 +99,7 @@ function checkformat() {
 }
 
 //fungsi untuk validasi format pada form edit
-function checkformatedit(id) {
+function checkformatedit() {
   //cek jika judul kosong atau tidak
   var judul = document.getElementById("Judul").value;
   if (judul==""){
@@ -108,7 +108,7 @@ function checkformatedit(id) {
     document.getElementById("title_comment").style.color="red";
     return false;
   }else{
-    document.getElementById("edit_form").action = "editdb.php?var="+id;
+    document.getElementById("edit_form").action = "editdb.php";
     return true;
   }
 }

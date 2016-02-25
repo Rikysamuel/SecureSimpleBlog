@@ -1,15 +1,15 @@
 <?php
     session_start();
     if (!isset($_SESSION["token"])) {
-        header('Location: index.php');
+        // header('Location: index.php');
     }
 
     if ($_SESSION['user-id'] != $_GET['id']) {
-        header('Location: index.php');
+        // header('Location: index.php');
     }
 
     if ($_SESSION['csrf-token'] != $_GET['tok']) {
-        header('Location: index.php');
+        // header('Location: index.php');
     }
 
     $_SESSION["csrf-token"] = hash("sha256", uniqid());
@@ -64,46 +64,65 @@
 
     <div class="art-body">
         <div class="art-body-inner">
-            <h2>Tambah Post</h2>
+            <h2>Edit Post</h2>
 
             <div id="contact-area">
                 <?php
-                    //koneksi ke database
+                    // db connection
                     $link=mysqli_connect("localhost","root","","my_db");
                     if (mysqli_connect_errno()) {
                       die ("Failed to connect to MySQL: " . mysqli_connect_error());
                     }
 
-                    //mengambil nilai id dari url
                     $id = $_GET['var'];
-                    //mengambil judul, tanggal, konten dari database
-                    $judul = mysqli_query($link,"SELECT JUDUL FROM Posting WHERE ID=$id");
-                    $judul = $judul->fetch_assoc();
-                    $tanggal = mysqli_query($link,"SELECT TANGGAL FROM Posting WHERE ID=$id");
-                    $tanggal = $tanggal->fetch_assoc();
-                    $konten = mysqli_query($link,"SELECT KONTEN FROM Posting WHERE ID=$id");
-                    $konten = $konten->fetch_assoc();
 
-                    //print ke halaman html
-                    echo '
-                        <form method="post" id="edit_form" onSubmit="return checkformatedit('.$id.')">
-                            <label for="Judul">Judul:</label>
-                            <input type="text" name="Judul" id="Judul" value="'.$judul['JUDUL'].'">
-                            <p id="title_comment"></p>
-
-                            <label for="Tanggal">Tanggal:</label>
-                            <input type="text" name="Tanggal" id="Tanggal" disabled value="'.$tanggal['TANGGAL'].'">
-                        
-                            <label for="Konten">Konten:</label><br>
-                            <textarea name="Konten" rows="20" cols="20" id="Konten">'.$konten['KONTEN'].'</textarea>
-
-                            <input type="submit" name="submit" value="Simpan" class="submit-button">
-                        </form>
-                    ';
-
-                    //menutup koneksi ke database
-                    mysqli_close($link);
+                    // fetch a row
+                    $item = mysqli_query($link, "SELECT * FROM Posting WHERE ID=$id");
+                    $item = $item->fetch_assoc();
                 ?>
+                    <form method="post" id="edit_form" enctype="multipart/form-data" onSubmit="return checkformatedit()">
+                        <label for="Judul">Judul:</label>
+                        <?php 
+                        if (isset($_SESSION['judul'])) { 
+                                echo '<input type="text" name="Judul" id="Judul" value="'.$_SESSION['judul'].'">';
+                                unset($_SESSION['judul']);
+                            } else {
+                                echo '<input type="text" name="Judul" id="Judul" value="'.$item['JUDUL'].'">';
+                            }
+                        ?>
+                        <p id="title_comment"></p>
+
+                        <label for="Tanggal">Tanggal:</label>
+                        <input type="text" name="Tanggal" id="Tanggal" disabled value="<?=$item['TANGGAL']?>">
+
+                        <label for="Image">Gambar:</label>
+                        <input type="file" name="Image" id="Image">
+                        <?php
+                            if (isset($_SESSION['error_msg'])) {
+                                echo '<p id="img_comment" style="color:red;">'.$_SESSION['error_msg'].'</p>';
+                                unset($_SESSION['error_msg']);
+                            } else {
+                                echo '<p id="img_comment" style="color:red;"></p>';
+                            }
+                        ?>
+                    
+                        <label for="Konten">Konten:</label><br>
+                        <?php
+                            if (isset($_SESSION['konten'])) {
+                                echo '<textarea name="Konten" rows="20" cols="20" id="Konten">'.$_SESSION['konten'].'</textarea>';
+                                unset($_SESSION['konten']);
+                            } else {
+                                echo '<textarea name="Konten" rows="20" cols="20" id="Konten">'.$item['KONTEN'].'</textarea>';
+                            }
+                        ?>
+
+                        <input type="hidden" id="id" name="id" value="<?=$id?>"/>
+                        <input type="hidden" id="csrf-token" name="csrf-token" value="<?=$_SESSION["csrf-token"]?>"/>
+
+                        <input type="submit" name="submit" value="Simpan" class="submit-button">
+                    </form>
+
+                <?php mysqli_close($link); ?>
             </div>
         </div>
     </div>
@@ -115,21 +134,20 @@
     <!-- <div class="footer-nav"><p></p></div> -->
     <div class="psi">&Psi;</div>
     <aside class="offsite-links">
-        Asisten IF3110 /
-        <a class="rss-link" href="#rss">RSS</a> /
+        [IF4033] Information Assurance and Security
         <br>
-        <a class="twitter-link" href="http://twitter.com/YoGiiSinaga">Yogi</a> /
-        <a class="twitter-link" href="http://twitter.com/sonnylazuardi">Sonny</a> /
-        <a class="twitter-link" href="http://twitter.com/fathanpranaya">Fathan</a> /
+        <a class="twitter-link" href="#">13512089 - Rikysamuel</a>
         <br>
-        <a class="twitter-link" href="#">Renusa</a> /
-        <a class="twitter-link" href="#">Kelvin</a> /
-        <a class="twitter-link" href="#">Yanuar</a> /
+        <a class="twitter-link" href="#">13512096 - Kevin Huang</a>
         
     </aside>
 </footer>
 
 </div>
+
+<script type="text/javascript">
+    document.getElementById("Tanggal").setAttribute("title", "Cannot change this value");
+</script>
 
 <script type="text/javascript" src="assets/js/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/fittext.js"></script>

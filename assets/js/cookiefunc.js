@@ -22,8 +22,7 @@ function cookieLogin(csrftoken) {
 	 			if (xmlhttp.responseText != "false") {
 	 				var ret = JSON.parse(xmlhttp.responseText);
 	 				setCookie("cookieid", ret[0], 7); // cookie di set dengan batas expire 1 minggu	
- 					document.getElementById('nav_id_login').innerHTML = "";
- 					document.getElementById('nav_id_login').innerHTML = "<li><a href='logout.php' style='color:red;'>" + ret[1] + " (logout)</a></li>&nbsp; | <li><a href='add_post.php'>+ Tambah Post</a></li>";
+	 				window.location.href = "index.php";
 	 			}
 	 		}
 	 	}

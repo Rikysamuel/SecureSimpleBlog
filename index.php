@@ -35,6 +35,7 @@
 
 <link rel="stylesheet" type="text/css" href="assets/css/screen.css" />
 <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
 
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -147,7 +148,6 @@
 <script type="text/javascript" src="assets/js/confirm.js"></script>
 <script type="text/javascript" src="assets/js/posting.js"></script>
 <script type="text/javascript" src="assets/js/sha256.js"></script>
-<script type="text/javascript" src="assets/js/cookiefunc.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">
